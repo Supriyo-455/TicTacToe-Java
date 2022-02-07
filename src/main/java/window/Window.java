@@ -15,14 +15,21 @@ public class Window extends JFrame implements Runnable {
     private Line[] lines;
 
     public Window(){
+        // ========= Setting up the JFrame =================
         this.setSize(WIDTH, HEIGHT);
         this.setTitle("Tic tac toe");
         this.setResizable(false);
         this.setVisible(true);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        // =================================================
 
+        // ============= Getting the graphics from JFrame ========
         this.g2 = (Graphics2D) this.getGraphics();
+        // =======================================================
+
+        // ============ Creating array of lines ===========
         this.lines = new Line[10];
+        // ================================================
 
         this.init();
     }
@@ -35,7 +42,7 @@ public class Window extends JFrame implements Runnable {
         int x = WIDTH/3;
         int y = HEIGHT/3;
         for(int i=1; i<3; i++){
-            lines[i] = new Line(i*x, 0, i*x, HEIGHT, Color.RED);
+            lines[i] = new Line(i*x, 0, i*x, HEIGHT, Color.WHITE);
         }
         int count = 0;
         for (int i = 3; i < 6; i++) {
@@ -65,14 +72,18 @@ public class Window extends JFrame implements Runnable {
     }
 
     private void draw(Graphics g) {
+        // casting Graphics to Graphics2D object
         Graphics2D g2N = (Graphics2D) g;
+        // =====================================
 
         // creating a big rect of screen size to change the background color :(XD LOL)
         g2N.setColor(Color.BLACK);
         g2N.fillRect(0, 0, WIDTH, HEIGHT);
         //===========================================================================
 
+        // =======================
         this.drawBoard(g2N);
+        // =======================
     }
 
     @Override
@@ -85,6 +96,5 @@ public class Window extends JFrame implements Runnable {
 
             update(deltaTime);
         }
-        return;
     }
 }
