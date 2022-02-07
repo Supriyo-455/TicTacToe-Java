@@ -93,7 +93,7 @@ public class Window extends JFrame implements Runnable {
             double time = Time.getTime();
             double deltaTime = time - lastTime;
             lastTime = time;
-
+            System.out.println("FPS : "+1/deltaTime);
             update(deltaTime);
         }
     }
