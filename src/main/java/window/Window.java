@@ -1,6 +1,8 @@
 package window;
 
+import game.GameBoard;
 import geometry.Line;
+import utils.Text;
 import utils.Time;
 
 import javax.swing.*;
@@ -41,16 +43,45 @@ public class Window extends JFrame implements Runnable {
     private void createBoard() {
         int x = WIDTH/3;
         int y = HEIGHT/3;
+        // Creating vertical lines
         for(int i=1; i<3; i++){
             lines[i] = new Line(i*x, 0, i*x, HEIGHT, Color.WHITE);
         }
         int count = 0;
+        // creating horizontal lines
         for (int i = 3; i < 6; i++) {
             count++;
             lines[i] = new Line(0, count*y, WIDTH, count*y, Color.WHITE);
         }
     }
 
+    //===== Fill board with X and O ========
+    public void fillBoard(Graphics2D g2){
+        String[][] board = new GameBoard().getBoard();
+        Font font = new Font("Monospace Regular", Font.BOLD, 50);
+        int x = 0;
+        int y = 1;
+        int offsetX = WIDTH/3;
+        int offsetY = HEIGHT/3;
+        for(String row[] : board){
+            for(String p : row){
+                Text text;
+                if(p == "X"){
+                    text = new Text(p, font, x*offsetX, y*offsetY);
+                    text.draw(g2);
+                }
+                else if(p == "O"){
+                    text = new Text(p, font, x*offsetX, y*offsetY);
+                    text.draw(g2);
+                }
+                x++;
+            }
+            y++;
+            x = 0;
+        }
+    }
+
+    //====== method for drawing lines =======
     private void drawBoard(Graphics2D g2) {
         for(int i=1; i<3; i++){
             lines[i].draw(g2);
@@ -59,6 +90,7 @@ public class Window extends JFrame implements Runnable {
             lines[i].draw(g2);
         }
     }
+    //========================================
 
     private void update(double dt) {
         // ================================================
@@ -83,6 +115,7 @@ public class Window extends JFrame implements Runnable {
 
         // =======================
         this.drawBoard(g2N);
+        this.fillBoard(g2N);
         // =======================
     }
 
