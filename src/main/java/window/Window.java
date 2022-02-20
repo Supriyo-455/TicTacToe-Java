@@ -57,27 +57,45 @@ public class Window extends JFrame implements Runnable {
 
     //===== Fill board with X and O ========
     public void fillBoard(Graphics2D g2){
+        //=============================================
+        //          INSTANCE of board
+        //=============================================
         String[][] board = new GameBoard().getBoard();
+        //=============================================
+
+        //============ Declaring the font for the text =====================
         Font font = new Font("Monospace Regular", Font.BOLD, 50);
-        int x = 0;
-        int y = 1;
-        int offsetX = WIDTH/3;
-        int offsetY = HEIGHT/3;
+        //==================================================================
+
+        //=======================================================
+        // For drawing the text in right positions in the board
+        // Explanation:
+        //      for row 0 col 0 the position should be
+        //          xpos = 0.4f*offsetX    here, offsetX = total width of screen / 3
+        //          xpos = 0.6f*offsetY    here, offsetY = total height of screen / 3
+        //
+        //      for row 1 col 1 the position should be
+        //          xpos = 1.4f*offsetX    here, offsetX = total width of screen / 3
+        //          xpos = 1.6f*offsetY    here, offsetY = total height of screen / 3
+        //
+        //
+        //      Like this.........
+        //=======================================================
+        float x = 0.4f;
+        float y = 0.6f;
+        float offsetX = WIDTH/3;
+        float offsetY = HEIGHT/3;
         for(String row[] : board){
             for(String p : row){
-                Text text;
-                if(p == "X"){
-                    text = new Text(p, font, x*offsetX, y*offsetY);
-                    text.draw(g2);
-                }
-                else if(p == "O"){
-                    text = new Text(p, font, x*offsetX, y*offsetY);
-                    text.draw(g2);
-                }
+                // making the text in that position
+                Text text = new Text(p, font, x*offsetX, y*offsetY);
+                // drawing the text
+                text.draw(g2);
                 x++;
             }
             y++;
-            x = 0;
+            // new row hence reset the col
+            x = 0.4f;
         }
     }
 
