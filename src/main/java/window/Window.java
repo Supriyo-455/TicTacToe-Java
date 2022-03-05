@@ -2,6 +2,7 @@ package window;
 
 import game.GameBoard;
 import geometry.Line;
+import listeners.ML;
 import utils.Text;
 import utils.Time;
 
@@ -15,6 +16,8 @@ public class Window extends JFrame implements Runnable {
     private final int HEIGHT = 600;
     public boolean isRunning = true;
     private Line[] lines;
+    private ML mouseListener = new ML();
+    private GameBoard gameBoard;
 
     public Window(){
         // ========= Setting up the JFrame =================
@@ -23,6 +26,8 @@ public class Window extends JFrame implements Runnable {
         this.setResizable(false);
         this.setVisible(true);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.addMouseListener(mouseListener);
+        this.addMouseMotionListener(mouseListener);
         // =================================================
 
         // ============= Getting the graphics from JFrame ========
@@ -33,6 +38,7 @@ public class Window extends JFrame implements Runnable {
         this.lines = new Line[10];
         // ================================================
 
+        // initializing the game
         this.init();
     }
 
@@ -53,6 +59,9 @@ public class Window extends JFrame implements Runnable {
             count++;
             lines[i] = new Line(0, count*y, WIDTH, count*y, Color.WHITE);
         }
+
+        // creating instance of gameboard
+        this.gameBoard = new GameBoard();
     }
 
     //===== Fill board with X and O ========
@@ -60,7 +69,7 @@ public class Window extends JFrame implements Runnable {
         //=============================================
         //          INSTANCE of board
         //=============================================
-        String[][] board = new GameBoard().getBoard();
+        String[][] board = this.gameBoard.getBoard();
         //=============================================
 
         //============ Declaring the font for the text =====================
@@ -119,6 +128,26 @@ public class Window extends JFrame implements Runnable {
         this.draw(dbg);
         g2.drawImage(dbImage, 0, 0, this);
         //==================================================
+
+        //=============== Checking for mouse events ==============
+        fillBoardAccordingToMouse();
+        //========================================================
+    }
+
+    private void fillBoardAccordingToMouse() {
+        int mouseX = (int) mouseListener.getMouseX();
+        int mouseY = (int) mouseListener.getMouseY();
+
+        int shellWidth = this.WIDTH/3;
+        int shellHeight = this.HEIGHT/3;
+
+        int row = mouseX/shellWidth;
+        int col = mouseY/shellHeight;
+
+        if(mouseListener.isMousePressed() && this.gameBoard.getBoard()[col][row] == " "){
+            this.gameBoard.placeMarker(col, row);
+            this.gameBoard.switchPlayer();
+        }
     }
 
     private void draw(Graphics g) {
